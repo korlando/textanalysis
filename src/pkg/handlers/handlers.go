@@ -22,18 +22,19 @@ func AnalyzeText(w http.ResponseWriter, r *http.Request) {
 	clout := float64(analysis.GetClout(words)) / total
 	tone := float64(analysis.GetTone(words)) / total
 	analytic := float64(analysis.GetAnalytic(words)) / total
+	totalChars := float64(0)
+	for _, w := range words {
+		totalChars += float64(len(w))
+	}
+	avgLength := totalChars / total
 	res := entities.AnalyzeTextResponse{
-		Clout:    clout,
-		Tone:     tone,
-		Analytic: analytic,
+		Clout:     clout,
+		Tone:      tone,
+		Analytic:  analytic,
+		NumWords:  total,
+		AvgLength: avgLength,
 	}
-	resJson, err := encodeBody(res)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	w.Write(resJson)
+	jsonResponse(w, res)
 }
 
 func decodeBody(r *http.Request, entity interface{}) (err error) {
@@ -44,6 +45,17 @@ func decodeBody(r *http.Request, entity interface{}) (err error) {
 
 func encodeBody(payload interface{}) ([]byte, error) {
 	return json.Marshal(payload)
+}
+
+func jsonResponse(w http.ResponseWriter, data interface{}) {
+	resJson, err := encodeBody(data)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(resJson)
 }
 
 // textToWords takes in text and returns a slice of words (strings);
