@@ -1,0 +1,5 @@
+package summary
+
+var (
+  Prepositions = []string{"aboard", "about", "above", "across", "after", "against", "ahead_of", "along", "amid", "amidst", "among", "around", "as", "as_far_as", "as_of", "aside_from", "at", "athwart", "atop", "barring", "because_of", "before", "behind", "below", "beneath", "beside", "besides", "between", "beyond", "by", "by_means_of", "circa", "concerning", "despite", "down", "during", "except", "except_for", "excluding", "far_from", "following", "for", "from", "in", "in_accordance_with", "in_addition_to", "in_case_of", "in_front_of", "in_lieu_of", "in_place_of", "in_spite_of", "including", "inside", "instead_of", "into", "like", "minus", "near", "next_to", "notwithstanding", "of", "off", "on", "on_account_of", "on_behalf_of", "on_top_of", "onto", "opposite", "out", "out_of", "outside", "over", "past", "plus", "prior_to", "regarding", "regardless_of", "save", "since", "than", "through", "till", "to", "toward", "towards", "under", "underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "with_regard_to", "within", "without"}
+)
