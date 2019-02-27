@@ -18,9 +18,10 @@ func AnalyzeText(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	words := textToWords(req.Text, true, true)
-	clout := analysis.GetClout(words)
-	tone := analysis.GetTone(words)
-	analytic := analysis.GetAnalytic(words)
+	total := float64(len(words))
+	clout := float64(analysis.GetClout(words)) / total
+	tone := float64(analysis.GetTone(words)) / total
+	analytic := float64(analysis.GetAnalytic(words)) / total
 	res := entities.AnalyzeTextResponse{
 		Clout:    clout,
 		Tone:     tone,

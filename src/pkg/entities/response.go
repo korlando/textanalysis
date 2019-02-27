@@ -1,7 +1,7 @@
 package entities
 
 type AnalyzeTextResponse struct {
-	Clout    int `json:"clout"`
-	Tone     int `json:"tone"`
-	Analytic int `json:"analytic"`
+	Clout    float64 `json:"clout"`
+	Tone     float64 `json:"tone"`
+	Analytic float64 `json:"analytic"`
 }
