@@ -1,14 +1,27 @@
 package handlers
 
 import (
+  "encoding/json"
   "net/http"
   "strings"
 
+  "pkg/entities"
   "pkg/summary"
 )
 
-func AnalyzeText(w http.ResponseWriter, _ *http.Request) {
+func AnalyzeText(w http.ResponseWriter, r *http.Request) {
+  var req entities.AnalyzeTextRequest
+  err := decodeBody(r, &req)
+  if err != nil {
+    w.WriteHeader(http.StatusBadRequest)
+  }
   w.Write([]byte{})
+}
+
+func decodeBody(r *http.Request, entity interface{}) (err error) {
+  decoder := json.NewDecoder(r.Body)
+  err = decoder.Decode(&entity)
+  return
 }
 
 // textToWords takes in text and returns a slice of words (strings);
