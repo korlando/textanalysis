@@ -1,5 +1,5 @@
 package summary
 
 var (
-  Articles = []string{"a", "an", "the"}
+	Articles = []string{"a", "an", "the"}
 )
