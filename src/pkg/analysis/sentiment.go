@@ -57,6 +57,9 @@ func GetAnalytic(words []string) (analytic int) {
 	return
 }
 
+// GetAuthentic loosely calculates the authenticity of
+// a slice of words (+1 for i, shehe, they, exclusive and
+// -1 for negemo, motion)
 func GetAuthentic(words []string) (authentic int) {
 	for _, w := range words {
 		w = strings.ToLower(w)

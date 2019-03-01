@@ -1,5 +1,6 @@
 package entities
 
 type AnalyzeTextRequest struct {
-	Text string `json:"text"`
+	Text  string   `json:"text"`
+	Texts []string `json:"texts"`
 }

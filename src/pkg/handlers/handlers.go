@@ -17,24 +17,34 @@ func AnalyzeText(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	words := textToWords(req.Text, true, true)
-	total := float64(len(words))
-	clout := float64(analysis.GetClout(words)) / total
-	tone := float64(analysis.GetTone(words)) / total
-	analytic := float64(analysis.GetAnalytic(words)) / total
-	authentic := float64(analysis.GetAuthentic(words)) / total
-	totalChars := float64(0)
-	for _, w := range words {
-		totalChars += float64(len(w))
+	texts := []string{}
+	if req.Text != "" {
+		texts = append(texts, req.Text)
 	}
-	avgLength := totalChars / total
-	res := entities.AnalyzeTextResponse{
-		Clout:     clout,
-		Tone:      tone,
-		Analytic:  analytic,
-		Authentic: authentic,
-		NumWords:  total,
-		AvgLength: avgLength,
+	if len(req.Texts) > 0 {
+		texts = append(texts, req.Texts...)
+	}
+	res := []entities.AnalyzeTextResponse{}
+	for _, text := range texts {
+		words := textToWords(text, true, true)
+		total := float64(len(words))
+		clout := float64(analysis.GetClout(words)) / total
+		tone := float64(analysis.GetTone(words)) / total
+		analytic := float64(analysis.GetAnalytic(words)) / total
+		authentic := float64(analysis.GetAuthentic(words)) / total
+		totalChars := float64(0)
+		for _, w := range words {
+			totalChars += float64(len(w))
+		}
+		avgLength := totalChars / total
+		res = append(res, entities.AnalyzeTextResponse{
+			Clout:     clout,
+			Tone:      tone,
+			Analytic:  analytic,
+			Authentic: authentic,
+			NumWords:  total,
+			AvgLength: avgLength,
+		})
 	}
 	jsonResponse(w, res)
 }
