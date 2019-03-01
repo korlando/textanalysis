@@ -24,27 +24,40 @@ func AnalyzeText(w http.ResponseWriter, r *http.Request) {
 	if len(req.Texts) > 0 {
 		texts = append(texts, req.Texts...)
 	}
-	res := []entities.AnalyzeTextResponse{}
+	analyzeTexts := []entities.AnalyzeTextResponse{}
+	totalNumWords := float64(0)
+	totalNumChars := float64(0)
 	for _, text := range texts {
 		words := textToWords(text, true, true)
-		total := float64(len(words))
-		clout := float64(analysis.GetClout(words)) / total
-		tone := float64(analysis.GetTone(words)) / total
-		analytic := float64(analysis.GetAnalytic(words)) / total
-		authentic := float64(analysis.GetAuthentic(words)) / total
-		totalChars := float64(0)
+		numWords := float64(len(words))
+		totalNumWords += numWords
+		clout := float64(analysis.GetClout(words)) / numWords
+		tone := float64(analysis.GetTone(words)) / numWords
+		analytic := float64(analysis.GetAnalytic(words)) / numWords
+		authentic := float64(analysis.GetAuthentic(words)) / numWords
+		numChars := float64(0)
 		for _, w := range words {
-			totalChars += float64(len(w))
+			numChars += float64(len(w))
 		}
-		avgLength := totalChars / total
-		res = append(res, entities.AnalyzeTextResponse{
+		totalNumChars += numChars
+		avgLength := numChars / numWords
+		analyzeTexts = append(analyzeTexts, entities.AnalyzeTextResponse{
 			Clout:     clout,
 			Tone:      tone,
 			Analytic:  analytic,
 			Authentic: authentic,
-			NumWords:  total,
+			NumWords:  numWords,
+			NumChars:  numChars,
 			AvgLength: avgLength,
 		})
+	}
+	res := entities.AnalyzeSummaryResponse{
+		AnalyzeTexts: analyzeTexts,
+		Metadata: entities.AnalyzeTextsMetadata{
+			AvgLength: totalNumChars / totalNumWords,
+			NumWords:  totalNumWords,
+			NumChars:  totalNumChars,
+		},
 	}
 	jsonResponse(w, res)
 }
