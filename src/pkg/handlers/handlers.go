@@ -22,6 +22,7 @@ func AnalyzeText(w http.ResponseWriter, r *http.Request) {
 	clout := float64(analysis.GetClout(words)) / total
 	tone := float64(analysis.GetTone(words)) / total
 	analytic := float64(analysis.GetAnalytic(words)) / total
+	authentic := float64(analysis.GetAuthentic(words)) / total
 	totalChars := float64(0)
 	for _, w := range words {
 		totalChars += float64(len(w))
@@ -31,6 +32,7 @@ func AnalyzeText(w http.ResponseWriter, r *http.Request) {
 		Clout:     clout,
 		Tone:      tone,
 		Analytic:  analytic,
+		Authentic: authentic,
 		NumWords:  total,
 		AvgLength: avgLength,
 	}

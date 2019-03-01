@@ -57,6 +57,21 @@ func GetAnalytic(words []string) (analytic int) {
 	return
 }
 
+func GetAuthentic(words []string) (authentic int) {
+	for _, w := range words {
+		w = strings.ToLower(w)
+		if inList(w, summary.IWords) || inList(w, summary.SheHe) || inList(w, summary.TheyWords) || inList(w, summary.Exclusive) {
+			authentic += 1
+			continue
+		}
+		if inList(w, summary.NegativeEmotions) || inList(w, summary.Motion) {
+			authentic -= 1
+			continue
+		}
+	}
+	return
+}
+
 // inList determines whether a word
 // is contained in a slice of words
 func inList(word string, words []string) bool {
